@@ -1,4 +1,3 @@
-import { model } from "mongoose";
 import models from "../models";
 import resource from './resources'
 export default {

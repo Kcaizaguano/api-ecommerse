@@ -5,5 +5,5 @@ import auth from '../middlewares/auth'
 const router = routerx();
 //http://localhost:3000/api/user/
 router.post("/register",auth.verifyEcommerce, SaleController.register);
-//router.post("/send_email/:id", SaleController.send_email);
+//router.get("/send_email/:id", SaleController.send_email);
 export default router;
