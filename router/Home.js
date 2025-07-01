@@ -8,4 +8,6 @@ router.get("/list", homeController.list);
 router.get("/landing-product/:slug", homeController.show_landing_product); 
 
 router.post("/profile_client",auth.verifyEcommerce ,homeController.profile_client); 
+router.post("/update_client",auth.verifyEcommerce ,homeController.update_client); 
+
 export default router;

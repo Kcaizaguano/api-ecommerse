@@ -6,7 +6,7 @@ import resources from './resources';
 export default {
     register: async (req, res) => {
         try {
-            req.body.password = await bycrypt.hash(req.body.password,10);
+            req.body.password = await bycrypt.hash(req.body.password, 10);
             const user = await models.User.create(req.body)
             res.status(200).json(user);
         } catch (error) {
@@ -17,16 +17,16 @@ export default {
 
     register_admin: async (req, res) => {
         try {
-            const userV = await models.User.findOne({ email: req.body.email})
+            const userV = await models.User.findOne({ email: req.body.email })
             if (userV) {
                 res.status(500).send({ message: "EL USUARIO YA EXISTE" });
                 console.log(error)
             }
-            req.body.rol ="admin";
-            req.body.password = await bycrypt.hash(req.body.password,10);
+            req.body.rol = "admin";
+            req.body.password = await bycrypt.hash(req.body.password, 10);
             let user = await models.User.create(req.body)
             res.status(200).json({
-                user:resources.User.user_list(user)
+                user: resources.User.user_list(user)
             });
         } catch (error) {
             res.status(500).send({ message: "OCURRIÓ UN PROBLEMA" });
@@ -39,26 +39,26 @@ export default {
             const user = await models.User.findOne({ email: req.body.email, state: 1 })
             if (user) {
                 //SI ESTA REGISTRADO EN EL SISTEMA 
-                let compare = await bycrypt.compare(req.body.password,user.password);
+                let compare = await bycrypt.compare(req.body.password, user.password);
                 if (compare) {
-                    let tokenT = await token.encode(user._id,user.rol,user.email);
-                    
+                    let tokenT = await token.encode(user._id, user.rol, user.email);
+
                     const USER_FRONTEND = {
                         token: tokenT,
-                        user:{
-                            _id:user._id,
+                        user: {
+                            _id: user._id,
                             name: user.name,
-                            email:user.email,
+                            email: user.email,
                             surname: user.surname,
-                            avatar:user.avatar,
+                            avatar: user.avatar,
 
                         },
                     }
 
-                    res.status(200).json({USER_FRONTEND:USER_FRONTEND})
+                    res.status(200).json({ USER_FRONTEND: USER_FRONTEND })
 
-                }else{
-                res.status(500).send({ message: "EL USUARIO NO ÉXISTE" });
+                } else {
+                    res.status(500).send({ message: "EL USUARIO NO ÉXISTE" });
                 }
 
             } else {
@@ -74,28 +74,28 @@ export default {
 
     login_admin: async (req, res) => {
         try {
-            const user = await models.User.findOne({ email: req.body.email, state: 1,rol:"admin" })
+            const user = await models.User.findOne({ email: req.body.email, state: 1, rol: "admin" })
             if (user) {
                 //SI ESTA REGISTRADO EN EL SISTEMA 
-                let compare = await bycrypt.compare(req.body.password,user.password);
+                let compare = await bycrypt.compare(req.body.password, user.password);
                 if (compare) {
-                    let tokenT = await token.encode(user._id,user.rol,user.email);
-                    
+                    let tokenT = await token.encode(user._id, user.rol, user.email);
+
                     const USER_FRONTEND = {
                         token: tokenT,
-                        user:{
+                        user: {
                             name: user.name,
-                            email:user.email,
+                            email: user.email,
                             surname: user.surname,
-                            avatar:user.avatar,
-                            rol:user.rol,
+                            avatar: user.avatar,
+                            rol: user.rol,
                         },
                     }
 
-                    res.status(200).json({USER_FRONTEND:USER_FRONTEND})
+                    res.status(200).json({ USER_FRONTEND: USER_FRONTEND })
 
-                }else{
-                res.status(500).send({ message: "EL USUARIO NO ÉXISTE" });
+                } else {
+                    res.status(500).send({ message: "EL USUARIO NO ÉXISTE" });
                 }
 
             } else {
@@ -121,17 +121,19 @@ export default {
             }
 
             if (req.body.password) {
-                req.body.password = await bycrypt.hash(req.body.password,10);
+                req.body.password = await bycrypt.hash(req.body.password, 10);
             }
 
-            await models.User.findByIdAndUpdate({_id: req.body._id},req.body)
-            let userT = await models.User.findOne({_id: req.body._id});
+            await models.User.findByIdAndUpdate({ _id: req.body._id }, req.body)
+            let userT = await models.User.findOne({ _id: req.body._id });
             res.status(200).json(
-                {message: "EL USUARIO SE A MODIFICADO CORRECTAMENTE ",
-                user: resources.User.user_list(userT) })
+                {
+                    message: "EL USUARIO SE A MODIFICADO CORRECTAMENTE ",
+                    user: resources.User.user_list(userT)
+                })
 
         } catch (error) {
-            
+
             res.status(500).send({ message: "OCURRIÓ UN PROBLEMA" });
             console.log(error)
         }
@@ -141,29 +143,29 @@ export default {
         try {
             var search = req.query.search;
             let Users = await models.User.find({
-                $or:[
-                    {'name' : new RegExp(search,"i")},
-                    {'surname' : new RegExp(search,"i")},
-                    {'email' : new RegExp(search,"i")}
+                $or: [
+                    { 'name': new RegExp(search, "i") },
+                    { 'surname': new RegExp(search, "i") },
+                    { 'email': new RegExp(search, "i") }
                 ]
-            }).sort({'createdAt':-1});
+            }).sort({ 'createdAt': -1 });
 
             Users = Users.map(user => {
                 return resources.User.user_list(user);
             })
 
             res.status(200).json({ users: Users });
-            
+
         } catch (error) {
             res.status(500).send({ message: "OCURRIÓ UN PROBLEMA" });
             console.log(error)
         }
     },
 
-    remove : async(req,res) => {
+    remove: async (req, res) => {
         try {
-            const USer = await models.User.findByIdAndDelete({_id: req.query._id });
-            res.status(200).json({ message: "EL USUARIO SE ELIMINO CORRECTAMENTE "})
+            const USer = await models.User.findByIdAndDelete({ _id: req.query._id });
+            res.status(200).json({ message: "EL USUARIO SE ELIMINO CORRECTAMENTE " })
         } catch (error) {
             res.status(500).send({ message: "OCURRIÓ UN PROBLEMA" });
             console.log(error)

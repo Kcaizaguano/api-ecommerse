@@ -10,6 +10,8 @@ import AddressClient from './AddressClient'
 import Sale from './Sale'
 import SaleAddress from './SaleAddress'
 import SaleDetail from './SaleDetail'
+import Review from './Review'
+
 
 
 export default {
@@ -25,4 +27,5 @@ export default {
     Sale,
     SaleAddress,
     SaleDetail,
+    Review,
 }
