@@ -6,17 +6,17 @@ import path from 'path'
 
 export default {
 
-    show: async(req, res) => {
+    show: async (req, res) => {
         try {
 
             var product_id = req.params.id;
-            let PRODUCT = await models.Product.findById( { _id:product_id }).populate("categorie")
-            
-            let VARIEDADES = await models.Variedad.find({product : product_id })
+            let PRODUCT = await models.Product.findById({ _id: product_id }).populate("categorie")
+
+            let VARIEDADES = await models.Variedad.find({ product: product_id })
             res.status(200).json({
-                product : resources.Product.product_list(PRODUCT, VARIEDADES),
+                product: resources.Product.product_list(PRODUCT, VARIEDADES),
             })
-            
+
         } catch (error) {
             res.status(500).send({ message: 'OCURRIO UN PROBLEMA' })
         }
@@ -104,9 +104,9 @@ export default {
                 filter.push(
                     { "categorie": req.query.categorie },
                 );
-                
+
             }
-            
+
             let query = filter.length > 0 ? { $and: filter } : {};
             let products = await models.Product.find(query).populate('categorie');
             products = products.map(product => {
@@ -126,7 +126,7 @@ export default {
     remove: async (req, res) => {
         try {
             let _id = req.query._id;
-            await models.Product.findByIdAndDelete({ _id:_id });
+            await models.Product.findByIdAndDelete({ _id: _id });
             res.status(200).json({ message: 'EL PRODUCTO SE ELIMINO CORRECTAMENTE' })
 
         } catch (error) {
