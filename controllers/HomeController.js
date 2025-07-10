@@ -65,6 +65,7 @@ export default {
                 let REVIEWS = await models.Review.find({ product: Product._id });
                 let AVG_REVIEWS = REVIEWS.length > 0 ? Math.ceil(REVIEWS.reduce((sum, item) => sum + item.cantidad, 0) / REVIEWS.length) : 0;
                 let COUNT_REVIEW = REVIEWS.length;
+                let DISCOUNT_EXIST = null;
                 if (CampaingDiscount) {
                     if (CampaingDiscount.type_segment == 1) { // por producto
                         let product_a = [];
@@ -271,6 +272,7 @@ export default {
                 let REVIEWS = await models.Review.find({ product: Product._id });
                 let AVG_REVIEWS = REVIEWS.length > 0 ? Math.ceil(REVIEWS.reduce((sum, item) => sum + item.cantidad, 0) / REVIEWS.length) : 0;
                 let COUNT_REVIEW = REVIEWS.length;
+                let DISCOUNT_EXIST = null;
                 if (CampaingDiscount) {
                     if (CampaingDiscount.type_segment == 1) { // por producto
                         let product_a = [];
@@ -395,6 +397,7 @@ export default {
                 let REVIEWS = await models.Review.find({ product: Product._id });
                 let AVG_REVIEWS = REVIEWS.length > 0 ? Math.ceil(REVIEWS.reduce((sum, item) => sum + item.cantidad, 0) / REVIEWS.length) : 0;
                 let COUNT_REVIEW = REVIEWS.length;
+                let DISCOUNT_EXIST = null;
                 if (CampaingDiscount) {
                     if (CampaingDiscount.type_segment == 1) { // por producto
                         let product_a = [];
